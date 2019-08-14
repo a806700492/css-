@@ -113,8 +113,15 @@
 <body>
     <div id="inner"></div>
     <div id="inner2"></div>
-    
+
     <script>
+        /**
+         * 冷却时间对象
+         * @class CdTime
+         * @constructor
+         * @param {string} boxId dom的id
+         * @param {number} cd 冷却时间
+         */
         class CdTime {
             constructor(boxId, cd) {
                 this._box_dom = document.getElementById(boxId)
