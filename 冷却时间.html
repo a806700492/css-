@@ -123,7 +123,7 @@
          * @param {number} cd 冷却时间
          */
         class CdTime {
-            constructor(boxId, cd) {
+            constructor(boxId, cd, callback) {
                 this._box_dom = document.getElementById(boxId)
                 this._cd = cd
                 this._box_dom.classList.add("inner")
@@ -133,35 +133,34 @@
                 this._s = this._box_dom.querySelector(".spiner")
                 this._f = this._box_dom.querySelector(".filler")
                 this._m = this._box_dom.querySelector(".masker")
+                this.callback = callback
             }
 
             start() {
-                let cdFloat = null,
-                    timeFloat = null
-
+                let cdFloat = null
                 this._s.classList.add('ani1')
                 this._f.classList.add('ani2')
                 this._m.classList.add('ani3')
                 this._m.style.animationDuration = this._f.style.animationDuration = this._s.style
                     .animationDuration = this._cd + 's'
-
                 this._cd > 1 && (this._in_dom.innerHTML = this._cd--)
 
                 const cdT = setInterval(() => {
-
                     if (this._cd <= 1) {
+                        clearInterval(cdT)
                         this._in_dom.innerHTML = this._cd
 
-                        timeFloat = setInterval(() => {
+                        cdFloat = setInterval(() => {
                             this._in_dom.innerHTML = this._cd.toFixed(1)
                             this._cd -= 0.1
+
                             if (this._cd <= 0) {
-                                clearInterval(timeFloat)
-                                clearInterval(cdT)
+                                clearInterval(cdFloat)
                                 this._in_dom.innerHTML = ''
                                 this._s.classList.remove('ani1')
                                 this._s.classList.remove('ani2')
                                 this._s.classList.remove('ani3')
+                                this.callback()
                             }
                         }, 100)
 
